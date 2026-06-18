@@ -42,7 +42,7 @@ Instead of a traditional landing page, this site is a working **code editor work
 ![Framer Motion](https://img.shields.io/badge/Framer_Motion-animations-0055FF?logo=framer&logoColor=white)
 ![AI SDK](https://img.shields.io/badge/Vercel_AI_SDK-terminal_AI-000000?logo=vercel&logoColor=white)
 
-**Also:** TanStack Query, shadcn/ui, date-fns, Lucide icons, Nitro (Vercel deploy)
+**Also:** TanStack Query, shadcn/ui, date-fns, Lucide icons, Nitro (Node.js server)
 
 ---
 
@@ -77,7 +77,8 @@ Without an AI key, the site works — only the terminal assistant is disabled.
 | Command | Description |
 | --- | --- |
 | `npm run dev` | Start dev server |
-| `npm run build` | Production build (Vercel-ready) |
+| `npm run build` | Production build (Node server in `.output/`) |
+| `npm run start` | Run production server locally |
 | `npm run preview` | Preview production build |
 | `npm run lint` | ESLint |
 
@@ -105,14 +106,93 @@ Content lives mainly in `src/lib/portfolio-data.tsx` — the explorer is driven 
 
 ---
 
-## Deploy
+## Deploy on Hostinger
 
-Configured for **Vercel** (`nitro` preset in `vite.config.ts`).
+This app needs **Node.js** (SSR + `/api/chat`). It will **not** run on plain PHP/shared hosting alone.
 
-1. Push to GitHub (public repo)
-2. Import project on [vercel.com](https://vercel.com)
-3. Add `GEMINI_API_KEY` under **Environment Variables**
-4. Point `klodi.dev` to Vercel in your DNS settings
+Use one of these Hostinger options:
+
+| Plan | Works? |
+| --- | --- |
+| **VPS** | Yes (recommended) |
+| **Cloud / Node.js Web App** | Yes, if Node 20+ is available |
+| **Basic shared hosting (PHP only)** | No |
+
+Build target: **Nitro `node-server`** (`vite.config.ts`).
+
+### Option A — Hostinger VPS (recommended)
+
+**On your VPS (Ubuntu):**
+
+```bash
+# 1. Install Node 20+
+curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
+sudo apt install -y nodejs nginx
+
+# 2. Clone & build
+git clone https://github.com/klodiianamazrekaj/klodi-dev-portfolio.git
+cd klodi-dev-portfolio
+npm install
+cp .env.example .env
+nano .env   # add GEMINI_API_KEY
+
+npm run build
+
+# 3. Run with PM2 (keeps app alive)
+sudo npm install -g pm2
+PORT=3000 pm2 start npm --name klodi-dev -- start
+pm2 save
+pm2 startup
+```
+
+**Nginx** (`/etc/nginx/sites-available/klodi.dev`):
+
+```nginx
+server {
+    listen 80;
+    server_name klodi.dev www.klodi.dev;
+
+    location / {
+        proxy_pass http://127.0.0.1:3000;
+        proxy_http_version 1.1;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+}
+```
+
+```bash
+sudo ln -s /etc/nginx/sites-available/klodi.dev /etc/nginx/sites-enabled/
+sudo nginx -t && sudo systemctl reload nginx
+sudo apt install certbot python3-certbot-nginx
+sudo certbot --nginx -d klodi.dev -d www.klodi.dev
+```
+
+**DNS (at Hostinger / domain registrar):**
+
+```
+Type: A     Name: @    Value: <your VPS IP>
+Type: A     Name: www  Value: <your VPS IP>
+```
+
+### Option B — Hostinger Node.js Web App
+
+If your plan includes **Node.js Web Applications**:
+
+1. Connect GitHub repo
+2. **Build command:** `npm run build`
+3. **Start command:** `npm run start`
+4. **Node version:** 20+
+5. Add environment variable: `GEMINI_API_KEY`
+6. Attach domain `klodi.dev` in Hostinger panel
+
+### After deploy
+
+- Test the site and terminal: `ask Are you open to remote roles?`
+- Test CV download
+- Redeploy after changing `.env` on the server
 
 ---
 
