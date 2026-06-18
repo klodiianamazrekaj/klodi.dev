@@ -8,7 +8,7 @@ const entry = candidates.find((path) => existsSync(path));
 
 if (!entry) {
   console.error(
-    "[server.mjs] No production build found. Run `npm run build` first (.output/server/index.mjs).",
+    "[hostinger.mjs] No production build found. Run `npm run build` first (.output/server/index.mjs).",
   );
   process.exit(1);
 }

@@ -10,7 +10,7 @@
     "dev": "vite dev",
     "build": "vite build",
     "postbuild": "node scripts/sync-hostinger-dist.mjs",
-    "start": "node server.mjs",
+    "start": "node hostinger.mjs",
     "build:dev": "vite build --mode development",
     "preview": "vite preview",
     "lint": "eslint .",

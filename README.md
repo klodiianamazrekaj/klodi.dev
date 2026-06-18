@@ -186,12 +186,12 @@ If your plan includes **Node.js Web Applications**, use these settings in hPanel
 | **Framework** | **Other** |
 | **Build command** | `npm run build` |
 | **Output directory** | *(leave empty or `.output`)* |
-| **Entry file** | `server.mjs` |
+| **Entry file** | `hostinger.mjs` |
 | **Node version** | 20+ |
 
-Do **not** use `server/index.mjs` alone — that path only exists **after** build, inside `.output/` or `dist/`.
+Do **not** use `server.mjs` — it conflicts with the Nitro build entry (`src/server.ts`).
 
-The root `server.mjs` starts the Nitro server from whichever build folder exists.
+The root `hostinger.mjs` only runs **after** deploy; it starts the compiled app from `.output/server/index.mjs`.
 
 Add environment variable: `GEMINI_API_KEY`
 
