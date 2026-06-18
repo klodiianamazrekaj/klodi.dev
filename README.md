@@ -179,14 +179,24 @@ Type: A     Name: www  Value: <your VPS IP>
 
 ### Option B — Hostinger Node.js Web App
 
-If your plan includes **Node.js Web Applications**:
+If your plan includes **Node.js Web Applications**, use these settings in hPanel:
 
-1. Connect GitHub repo
-2. **Build command:** `npm run build`
-3. **Start command:** `npm run start`
-4. **Node version:** 20+
-5. Add environment variable: `GEMINI_API_KEY`
-6. Attach domain `klodi.dev` in Hostinger panel
+| Setting | Value |
+| --- | --- |
+| **Framework** | Other |
+| **Build command** | `npm run build` |
+| **Output directory** | `dist` (auto-copied from `.output` after build) |
+| **Entry file** | `server/index.mjs` |
+| **Node version** | 20+ |
+| **Start command** | `npm run start` (optional if entry file is set) |
+
+`npm run build` runs Nitro (output in `.output`), then `postbuild` copies it to `dist` so Hostinger finds the files.
+
+**Alternative:** set Output directory to `.output` and Entry file to `server/index.mjs` (skip the `dist` copy).
+
+Add environment variable: `GEMINI_API_KEY`
+
+Attach domain `klodi.dev` in Hostinger panel.
 
 ### After deploy
 
