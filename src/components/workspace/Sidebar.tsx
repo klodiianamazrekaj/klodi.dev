@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { ChevronRight, FileCode2, Folder, FolderOpen } from "lucide-react";
+import { ChevronRight, Download, FileCode2, Folder, FolderOpen } from "lucide-react";
 import { FILES, TREE, fileTint, type TreeNode } from "@/lib/portfolio-data";
+import { CV_PDF_FILENAME, CV_PDF_PATH } from "@/lib/cv";
 import { useWorkspace } from "@/store/workspace";
 import { cn } from "@/lib/utils";
 
@@ -101,8 +102,18 @@ export function SidebarContent() {
           <NodeRow key={n.type === "file" ? n.id : n.name} node={n} depth={1} />
         ))}
       </nav>
-      <div className="border-t px-4 py-3 font-mono text-[11px] text-muted-foreground">
-        <span className="text-syntax-string">●</span> available for work
+      <div className="border-t px-4 py-3">
+        <a
+          href={CV_PDF_PATH}
+          download={CV_PDF_FILENAME}
+          className="mb-2 flex items-center gap-2 rounded-md border bg-secondary/60 px-2.5 py-2 font-mono text-[11px] text-muted-foreground transition-colors hover:border-ring/40 hover:text-foreground md:hidden"
+        >
+          <Download className="size-3.5 shrink-0 text-primary" />
+          Download CV
+        </a>
+        <p className="font-mono text-[11px] text-muted-foreground">
+          <span className="text-syntax-string">●</span> available for work
+        </p>
       </div>
     </div>
   );
