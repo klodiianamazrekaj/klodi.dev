@@ -183,16 +183,15 @@ If your plan includes **Node.js Web Applications**, use these settings in hPanel
 
 | Setting | Value |
 | --- | --- |
-| **Framework** | Other |
+| **Framework** | **Other** |
 | **Build command** | `npm run build` |
-| **Output directory** | `dist` (auto-copied from `.output` after build) |
-| **Entry file** | `server/index.mjs` |
+| **Output directory** | *(leave empty or `.output`)* |
+| **Entry file** | `server.mjs` |
 | **Node version** | 20+ |
-| **Start command** | `npm run start` (optional if entry file is set) |
 
-`npm run build` runs Nitro (output in `.output`), then `postbuild` copies it to `dist` so Hostinger finds the files.
+Do **not** use `server/index.mjs` alone — that path only exists **after** build, inside `.output/` or `dist/`.
 
-**Alternative:** set Output directory to `.output` and Entry file to `server/index.mjs` (skip the `dist` copy).
+The root `server.mjs` starts the Nitro server from whichever build folder exists.
 
 Add environment variable: `GEMINI_API_KEY`
 
