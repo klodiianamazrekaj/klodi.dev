@@ -118,7 +118,8 @@ function runCommand(cmd: string, openFile: (id: string) => void): Line[] {
     case "contact": {
       openFile("contact");
       return [
-        { type: "output", text: "email    → klodiana@example.com" },
+        { type: "output", text: "email    → info@klodi.dev" },
+        { type: "output", text: "phone    → +383 49 827 677" },
         { type: "output", text: "linkedin → in/klodiana-mazrekaj" },
         { type: "output", text: "github   → github.com/klodiianamazrekaj" },
         { type: "system", text: "opened contact.md" },

@@ -348,7 +348,8 @@ Online car auction platform using Next.js, .NET, RabbitMQ, PostgreSQL, MongoDB, 
 Islamic app/website concept focused on duas, dhikr, abdes, Islamic learning, and clean spiritual UI.
 
 ## Contact
-Email: klodiana@example.com
+Email: info@klodi.dev
+Phone: +383 49 827 677
 LinkedIn: in/klodiana-mazrekaj
 GitHub: github.com/klodiianamazrekaj
 `;
